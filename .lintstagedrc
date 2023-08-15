@@ -1,0 +1,4 @@
+{
+  "client/**/*.{js,jsx}": ["eslint --fix --max-warnings=0", "prettier --write"],
+  "server/**/*.{js}": ["eslint --fix --max-warnings=0", "prettier --write"]
+}
