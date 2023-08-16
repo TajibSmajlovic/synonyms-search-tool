@@ -7,7 +7,7 @@ import {
   Searchbox,
   FloatingButton,
 } from 'components';
-import { useSearchbox } from 'hooks';
+import { useIsMobileKeyboardOpen, useSearchbox } from 'hooks';
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
 import SynonymsList from './SynonymsList';
@@ -16,6 +16,7 @@ import { useGetSynonyms } from './api/useGetSynonyms';
 import { useAddSynonyms } from './api/useAddSynonyms';
 
 const Synonyms = () => {
+  const isMobileKeyboardOpen = useIsMobileKeyboardOpen();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -83,7 +84,11 @@ const Synonyms = () => {
         />
       </If>
 
-      <FloatingButton onClick={initiateAddSynonyms}>Add Synonym</FloatingButton>
+      {!isMobileKeyboardOpen && (
+        <FloatingButton onClick={initiateAddSynonyms}>
+          Add Synonym
+        </FloatingButton>
+      )}
 
       <If predicate={isModalOpen}>
         <AddSynonymsModal
