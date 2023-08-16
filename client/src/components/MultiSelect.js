@@ -2,10 +2,17 @@ import styled from 'styled-components';
 import { useState } from 'react';
 
 import { Input as DefaultInput } from 'components';
-import { CloseIcon } from 'assets';
+import { CloseIcon } from 'assets/Icons';
+import { generateId } from 'utils/helpers';
 import { MULTI_SELECT_CATEGORIES } from 'utils/constants';
 
 const SCROLL_THRESHOLD = 50;
+
+const generateItem = (value) => ({
+  id: generateId(),
+  value,
+  label: value,
+});
 
 export const MultiSelect = ({
   inputValue,
@@ -21,6 +28,8 @@ export const MultiSelect = ({
   handleItemRemove,
   placeholder = 'Enter a value',
   isDisabled = false,
+  PreselectedValueComponent = Selected,
+  SelectedValueComponent = Selected,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -51,31 +60,25 @@ export const MultiSelect = ({
         $isDropdownOpen={isOpen}
       />
       <SelectedValues>
-        {preselectedItems.map((value) => (
-          <SelectedValue key={value}>
-            <span>{value}</span>
-            <div
-              onClick={() =>
-                handleItemRemove(value, MULTI_SELECT_CATEGORIES.PRESELECTED)
-              }
-            >
-              <CloseIcon height={10} width={10} />
-            </div>
-          </SelectedValue>
+        {preselectedItems.map((item) => (
+          <PreselectedValueComponent
+            key={item.id}
+            item={item}
+            handleItemRemove={() =>
+              handleItemRemove(item, MULTI_SELECT_CATEGORIES.PRESELECTED)
+            }
+          />
         ))}
-        {selectedItems.map((value) => (
-          <SelectedValue
-            key={value}
+        {selectedItems.map((item) => (
+          <SelectedValueComponent
+            key={item.id}
             style={{
               backgroundColor: 'var(--primary-light)',
               borderColor: 'var(--primary-darker)',
             }}
-          >
-            <span>{value}</span>
-            <div onClick={() => handleItemRemove(value)}>
-              <CloseIcon height={10} width={10} />
-            </div>
-          </SelectedValue>
+            item={item}
+            handleItemRemove={handleItemRemove}
+          />
         ))}
       </SelectedValues>
       <Dropdown
@@ -88,6 +91,15 @@ export const MultiSelect = ({
     </StyledMultiSelect>
   );
 };
+
+export const Selected = ({ item, handleItemRemove, ...rest }) => (
+  <SelectedValue {...rest}>
+    <span>{item.value}</span>
+    <div onClick={() => handleItemRemove(item)}>
+      <CloseIcon height={10} width={10} />
+    </div>
+  </SelectedValue>
+);
 
 const Dropdown = ({
   isOpen,
@@ -102,7 +114,7 @@ const Dropdown = ({
   if (options.length === 0 && Boolean(inputValue))
     return (
       <StyledDropdown>
-        <AddOption onClick={() => handleSelect(inputValue)}>
+        <AddOption onClick={() => handleSelect(generateItem(inputValue))}>
           Add <b>{inputValue}</b>
         </AddOption>
       </StyledDropdown>
@@ -122,8 +134,8 @@ const Dropdown = ({
   return (
     <StyledDropdown onScroll={onScroll}>
       {options.map((option) => (
-        <Option key={option} onClick={() => handleSelect(option)}>
-          {option}
+        <Option key={option.id} onClick={() => handleSelect(option)}>
+          {option.value}
         </Option>
       ))}
     </StyledDropdown>

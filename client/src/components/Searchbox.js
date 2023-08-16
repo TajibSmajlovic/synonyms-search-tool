@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { CloseIcon } from 'assets';
+import { CloseIcon } from 'assets/Icons';
 import { If, Spinner } from 'components';
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 

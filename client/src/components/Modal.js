@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useEffect } from 'react';
 
-import { CloseIcon } from 'assets';
+import { CloseIcon } from 'assets/Icons';
 import { If, PreventPropagation } from 'components';
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 

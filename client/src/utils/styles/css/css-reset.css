@@ -103,9 +103,13 @@ nav,
 section {
   display: block;
 }
-ol,
 ul {
-  list-style: none;
+  margin-inline: 0.5rem;
+}
+li {
+  &:not(:last-of-type) {
+    margin-bottom: 0.5rem;
+  }
 }
 blockquote,
 q {

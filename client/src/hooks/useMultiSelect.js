@@ -13,13 +13,6 @@ const ACTIONS = {
 function valuesReducer(state, action) {
   switch (action.type) {
     case ACTIONS.ADD_ITEM:
-      if (
-        state.preselected.includes(action.payload) ||
-        state.selected.includes(action.payload)
-      ) {
-        return state;
-      }
-
       return {
         ...state,
         [action.category]: [...state[action.category], action.payload],
@@ -28,7 +21,7 @@ function valuesReducer(state, action) {
       return {
         ...state,
         [action.category]: state[action.category].filter(
-          (item) => item !== action.payload,
+          (item) => item.value !== action.payload.value,
         ),
       };
     case ACTIONS.POPULATE_PRESELECTED_ITEMS:
@@ -77,19 +70,21 @@ export const useMultiSelect = (initiallySelectedValues = []) => {
     dispatch({ type: ACTIONS.REMOVE_ITEM, payload: item, category });
   };
 
-  const populatePreselectedValues = useCallback((items) => {
+  // wrapped in useCallback to be safe to use within useEffect
+  const populatePreselectedItems = useCallback((items) => {
     dispatch({ type: ACTIONS.POPULATE_PRESELECTED_ITEMS, payload: items });
   }, []);
 
-  const removePreselectedItems = useCallback(() => {
-    dispatch({ type: ACTIONS.REMOVE_PRESELECTED_ITEMS });
+  // wrapped in useCallback to be safe to use within useEffect
+  const clearState = useCallback(() => {
+    dispatch({ type: ACTIONS.CLEAR_STATE });
   }, []);
 
   return {
     inputValue,
     items,
-    populatePreselectedValues,
-    removePreselectedItems,
+    populatePreselectedItems,
+    clearState,
     handleItemSelect,
     handleItemRemove,
     onInputChange,
