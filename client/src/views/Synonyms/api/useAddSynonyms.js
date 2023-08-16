@@ -15,11 +15,11 @@ export const useAddSynonyms = () => {
   useApiNotification({
     result,
     successMessage: result?.message,
-    errorMessage: error?.message,
   });
 
   return {
     addSynonyms,
     isLoading,
+    error,
   };
 };

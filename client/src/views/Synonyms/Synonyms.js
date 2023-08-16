@@ -31,7 +31,11 @@ const Synonyms = () => {
     refetch: refetchSynonyms,
   } = useGetSynonyms(word);
 
-  const { addSynonyms, isLoading: isAdding } = useAddSynonyms(refetchSynonyms);
+  const {
+    addSynonyms,
+    isLoading: isAdding,
+    error: addSynonymApiError,
+  } = useAddSynonyms(refetchSynonyms);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -55,11 +59,8 @@ const Synonyms = () => {
         await refetchSynonyms(word);
       }
 
-      await refetchSynonyms();
-    } catch {
-    } finally {
       closeModal();
-    }
+    } catch {}
   };
 
   return (
@@ -91,6 +92,7 @@ const Synonyms = () => {
           initialWord={word}
           onClose={closeModal}
           onSubmit={onSubmit}
+          error={addSynonymApiError?.message}
         />
       </If>
     </Container>

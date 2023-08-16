@@ -4,7 +4,7 @@ import { CloseIcon } from 'assets/Icons';
 import { If } from 'components';
 import { ALERT_VARIANTS, SCREEN_BREAKPOINTS } from 'utils/constants';
 
-export const Alert = ({ variant, onClose, children }) => {
+export const Alert = ({ variant, onClose, children, ...rest }) => {
   let Component;
 
   switch (variant) {
@@ -25,7 +25,7 @@ export const Alert = ({ variant, onClose, children }) => {
   }
 
   return (
-    <Component>
+    <Component {...rest}>
       {children}
       <If predicate={onClose}>
         <Close onClick={onClose}>

@@ -13,6 +13,7 @@ import {
   Selected,
   Tooltip,
   Collapse,
+  If,
 } from 'components';
 import {
   flatSynonymsTree,
@@ -31,6 +32,7 @@ const AddSynonymsModal = ({
   onClose,
   onSubmit,
   isAddingSynonyms,
+  error: apiError,
 }) => {
   const {
     onInputChange,
@@ -60,17 +62,21 @@ const AddSynonymsModal = ({
     [words],
   );
 
-  // preselected multiselect items that are loaded from the synonyms tree
-  const preselectedItems = useMemo(() => {
-    const flattenedTree = flatSynonymsTree(synonymsTree);
-    const flattenedList = mapFlattenedSynonymsTreeToList(flattenedTree);
+  const flattenedSynonymsTreeList = useMemo(
+    () => mapFlattenedSynonymsTreeToList(flatSynonymsTree(synonymsTree)),
+    [synonymsTree],
+  );
 
-    return flattenedList.map((synonym) => ({
-      id: generateId(),
-      value: synonym.word,
-      label: synonym.synonyms,
-    }));
-  }, [synonymsTree]);
+  // preselected multiselect items that are loaded from the synonyms tree
+  const preselectedItems = useMemo(
+    () =>
+      flattenedSynonymsTreeList.map((synonym) => ({
+        id: generateId(),
+        value: synonym.word,
+        label: synonym.synonyms,
+      })),
+    [flattenedSynonymsTreeList],
+  );
 
   const onWordChange = (event) => {
     onInputWordChange(event);
@@ -89,18 +95,16 @@ const AddSynonymsModal = ({
   // guard that prevents adding duplicate values
   const canAddItem = (item) => {
     if (item.value === word) return false;
-    if (
-      items.selected.find((selectedItem) => selectedItem.value === item.value)
-    )
-      return false;
-    if (
-      items.preselected.find(
-        (preselectedItem) => preselectedItem.value === item.value,
-      )
-    )
-      return false;
 
-    return true;
+    const preselectedItems = items.preselected
+      .map((item) => [item.value, ...(item.label.length ? [item.label] : [])])
+      .flat();
+    const relatedItems = [
+      ...items.selected.map((item) => item.value),
+      ...preselectedItems,
+    ];
+
+    return !relatedItems.includes(item.value);
   };
 
   const handleMultiSelectAdd = (item) => {
@@ -135,10 +139,10 @@ const AddSynonymsModal = ({
   const handleSubmit = () => {
     if (checkForErrors()) return;
 
-    const removedSynonyms = items.preselected.map((item) => item.value);
+    const preselectedSynonyms = items.preselected.map((item) => item.value);
     const synonymsToAdd = items.selected.map((item) => item.value);
-    const synonymsToRemove = preselectedItems
-      .filter((synonym) => !removedSynonyms.includes(synonym.word))
+    const synonymsToRemove = flattenedSynonymsTreeList
+      .filter((synonym) => !preselectedSynonyms.includes(synonym.word))
       .map((item) => item.word)
       .filter(Boolean);
 
@@ -163,11 +167,25 @@ const AddSynonymsModal = ({
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalHeader onClose={onClose}>Add Synonym</ModalHeader>
       <ModalBody>
+        <If predicate={Boolean(apiError)}>
+          <Alert variant="error" style={{ textAlign: 'center' }}>
+            {apiError}
+          </Alert>
+          <br />
+        </If>
         <Collapse title="Things to keep in mind">
           <InfoWrapper>
             <Alert variant="warning">
-              The synonyms will be loaded automatically if the entered word
-              already contains a synonyms.
+              <ul>
+                <li>
+                  The synonyms will be loaded automatically if the entered word
+                  already contains a synonyms.
+                </li>
+                <li>
+                  Synonym won't be selected if it already exists directly or
+                  transitively.
+                </li>
+              </ul>
             </Alert>
             <Alert variant="info">
               <ul>
@@ -217,7 +235,7 @@ const AddSynonymsModal = ({
 };
 
 const PreselectedValueComponent = ({ item, handleItemRemove, ...rest }) => (
-  <Tooltip text={item.label}>
+  <Tooltip text={item.label.join(', ')}>
     <Selected item={item} handleItemRemove={handleItemRemove} {...rest} />
   </Tooltip>
 );

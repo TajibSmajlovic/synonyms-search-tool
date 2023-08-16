@@ -35,7 +35,7 @@ export const flatSynonymsTree = (tree) => {
   const flattened = {};
 
   for (const key in tree) {
-    flattened[key] = flatSynonymsTreeRecursively(tree[key]).join(', ');
+    flattened[key] = flatSynonymsTreeRecursively(tree[key]);
   }
 
   return flattened;
@@ -46,13 +46,13 @@ export const flatSynonymsTree = (tree) => {
 
   example:
       {                               [
-        ecstatic: ""                    {word: 'joyful', synonyms: ''},
-        joyful: ""              ->      {word: 'ecstatic', synonyms: ''},
-        raif: "rojf, smajke"            {word: 'tajib', synonyms: 'rojf, smajke'}
+        ecstatic: []                    {word: 'joyful', synonyms: ''},
+        joyful: []              ->      {word: 'ecstatic', synonyms: ''},
+        raif: ['rojf, 'smajke']         {word: 'raif', synonyms: 'rojf, smajke'}
       }                               ]
 */
 export const mapFlattenedSynonymsTreeToList = (flattenedSynonymsTree) =>
-  Object.keys(flattenedSynonymsTree).map((key) => ({
-    word: key,
-    synonyms: flattenedSynonymsTree[key],
+  Object.keys(flattenedSynonymsTree).map((word) => ({
+    word,
+    synonyms: flattenedSynonymsTree[word],
   }));

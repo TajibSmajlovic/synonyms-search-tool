@@ -125,5 +125,10 @@ const ModalContent = styled.div`
   margin: auto;
   background-color: var(--white);
   padding: 1.5rem;
+
+  @media screen and (height <= 700px) {
+    max-height: 95dvh;
+    overflow: auto;
+  }
 `;
 //#endregion Styles
