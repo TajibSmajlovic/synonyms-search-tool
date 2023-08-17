@@ -7,7 +7,6 @@ export { Button } from './Button';
 export { FloatingButton } from './FloatingButton';
 export { If } from './If';
 export { Input } from './Input';
-export { PreventPropagation } from './PreventPropagation';
 export { Alert } from './Alert';
 export { MultiSelect, Selected } from './MultiSelect';
 export { Notifications } from './Notifications';

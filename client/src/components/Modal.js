@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { useEffect } from 'react';
 
 import { CloseIcon } from 'assets/Icons';
-import { If, PreventPropagation } from 'components';
+import { If } from 'components';
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
 //#region Components
@@ -19,9 +19,7 @@ export const Modal = ({ isOpen, onClose, children }) => {
   return (
     <If predicate={isOpen}>
       <Wrapper onClick={onClose}>
-        <PreventPropagation>
-          <ModalContent>{children}</ModalContent>
-        </PreventPropagation>
+        <ModalContent>{children}</ModalContent>
       </Wrapper>
     </If>
   );
@@ -120,7 +118,9 @@ const Wrapper = styled.div`
   }
 `;
 
-const ModalContent = styled.div`
+const ModalContent = styled(({ ...rest }) => (
+  <div onClick={(e) => e.stopPropagation()} {...rest} />
+))`
   width: min(100%, 600px);
   margin: auto;
   background-color: var(--white);
