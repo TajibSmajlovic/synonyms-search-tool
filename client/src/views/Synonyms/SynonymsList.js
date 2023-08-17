@@ -22,13 +22,16 @@ const SynonymsList = ({ word, synonyms, isLoading, openModal, children }) => {
           Click <span onClick={openModal}>here</span> to add one.
         </ResultMessage>
       ) : (
-        <ListWrapper>
-          {synonyms.map((synonym, index) => (
-            <Synonym key={index}>{synonym}</Synonym>
-          ))}
-        </ListWrapper>
+        <>
+          <ListWrapper>
+            {synonyms.map((synonym, index) => (
+              <Synonym key={index}>{synonym}</Synonym>
+            ))}
+          </ListWrapper>
+
+          {children}
+        </>
       )}
-      {children}
     </ResultsWrapper>
   );
 };
