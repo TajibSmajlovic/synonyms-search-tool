@@ -11,7 +11,11 @@ const { errorConverter, errorHandler } = require('@middlewares');
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: config.corsOrigin,
+  }),
+);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
