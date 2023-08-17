@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 require('module-alias/register');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -10,6 +11,10 @@ const { ApiError } = require('@utils/errors');
 const { errorConverter, errorHandler } = require('@middlewares');
 
 const app = express();
+
+// eslint-disable-next-line no-console
+console.log('config', config);
+console.log('config.corsOrigin', config.corsOrigin);
 
 app.use(
   cors({
