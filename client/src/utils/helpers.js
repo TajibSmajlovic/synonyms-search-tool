@@ -1,6 +1,6 @@
 export const generateId = () => `id_${new Date().getTime()}_${Math.random()}`;
 
-export const buildQueryPath = (path, params) => {
+export function buildQueryPath(path, params) {
   let queryParams = '';
 
   Object.entries(params).forEach(([key, value]) => {
@@ -12,7 +12,7 @@ export const buildQueryPath = (path, params) => {
   });
 
   return `${path}?${queryParams}`;
-};
+}
 
 // recursively iterate over synonyms tree and populate array with all synonyms found
 function flatSynonymsTreeRecursively(synonymsTree, flattened = []) {
@@ -30,8 +30,8 @@ function flatSynonymsTreeRecursively(synonymsTree, flattened = []) {
   return flattened;
 }
 
-// iterate over direct synonyms (children) and create a string contain all connected synonyms
-export const flatSynonymsTree = (tree) => {
+// iterate over direct synonyms (children) and create a string contain all connected (transient) synonyms
+export function flatSynonymsTree(tree) {
   const flattened = {};
 
   for (const key in tree) {
@@ -39,17 +39,16 @@ export const flatSynonymsTree = (tree) => {
   }
 
   return flattened;
-};
+}
 
 /*
-  map flattened synonyms tree to list of objects
-
-  example:
-      {                               [
-        ecstatic: []                    {word: 'joyful', synonyms: ''},
-        joyful: []              ->      {word: 'ecstatic', synonyms: ''},
-        raif: ['rojf, 'smajke']         {word: 'raif', synonyms: 'rojf, smajke'}
-      }                               ]
+  map flattened tree to list of objects
+  ex:
+      {                                     [
+        ecstatic: []                          {word: 'joyful', synonyms: []},
+        joyful: []                 --->       {word: 'ecstatic', synonyms: []},
+        raif: ['rojf, 'smajke']               {word: 'raif', synonyms: ['rojf, smajke']}
+      }                                     ]
 */
 export const mapFlattenedSynonymsTreeToList = (flattenedSynonymsTree) =>
   Object.keys(flattenedSynonymsTree).map((word) => ({

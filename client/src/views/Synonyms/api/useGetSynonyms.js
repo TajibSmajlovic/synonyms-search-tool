@@ -18,10 +18,7 @@ export const useGetSynonyms = (word) => {
   const isLoading = useSpinDelay(isLoadingSynonyms);
   const [showSynonyms, setShowSynonyms] = useState(false);
 
-  const synonyms = useMemo(
-    () => result?.data?.synonyms || [],
-    [result?.data?.synonyms],
-  );
+  const synonyms = useMemo(() => result?.data || [], [result?.data]);
 
   useApiNotification({
     errorMessage: error?.message,
@@ -39,13 +36,12 @@ export const useGetSynonyms = (word) => {
 
   // keeping track when to show synonyms in order to use it with the animation
   useEffect(() => {
-    const shouldShow =
-      Boolean(word) && Boolean(result?.data?.synonyms) && !isLoading;
+    const shouldShow = Boolean(word) && Boolean(result?.data) && !isLoading;
 
     if (shouldShow) {
       setShowSynonyms(true);
     }
-  }, [isLoading, result?.data?.synonyms, word]);
+  }, [isLoading, result?.data, word]);
 
   return {
     synonyms,

@@ -33,18 +33,18 @@ export const MultiSelect = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onFocus = () => {
+  const onFocus = (event) => {
     setIsOpen(true);
-    onInputFocus?.();
+    onInputFocus?.(event);
   };
 
-  const onBlur = () => {
+  const onBlur = (event) => {
     // a small delay is needed to prevent the dropdown from closing before the item is selected
     setTimeout(() => {
       setIsOpen(false);
     }, 80);
 
-    onInputBlur?.();
+    onInputBlur?.(event);
   };
 
   return (
@@ -109,9 +109,9 @@ const Dropdown = ({
   handleScroll,
 }) => {
   if (!isOpen) return null;
-  if (options.length === 0 && !Boolean(inputValue)) return null;
+  if (!Boolean(options.length) && !Boolean(inputValue)) return null;
 
-  if (options.length === 0 && Boolean(inputValue))
+  if (!Boolean(options.length) && Boolean(inputValue))
     return (
       <StyledDropdown>
         <AddOption onClick={() => handleSelect(generateItem(inputValue))}>

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
 
-export const Tooltip = ({ text, children }) => (
+export const Tooltip = ({ text, children, ...rest }) => (
   <StyledTooltip>
     {children}
-    <TooltipContent>{text}</TooltipContent>
+    <TooltipContent {...rest}>{text}</TooltipContent>
   </StyledTooltip>
 );
 
@@ -20,11 +20,11 @@ const TooltipContent = styled.div`
   top: 105%;
   left: 50%;
   transform: translateX(-50%);
-  background-color: var(--warning-background);
+  background-color: var(--info-background);
   color: var(--info);
   text-align: center;
   border-radius: 4px;
-  font-size: 0.675rem;
+  font-size: 0.875rem;
   opacity: 0;
   visibility: hidden;
   transition:

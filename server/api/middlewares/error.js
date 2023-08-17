@@ -8,7 +8,10 @@ const errorConverter = (err, req, res, next) => {
 
   if (!(error instanceof ApiError)) {
     const statusCode = error.statusCode || HTTP_STATUSES.INTERNAL_SERVER_ERROR;
-    const message = error.message || 'Unable to complete the request.';
+    const message =
+      statusCode === HTTP_STATUSES.INTERNAL_SERVER_ERROR
+        ? 'Unable to complete the request.'
+        : error.message;
 
     error = new ApiError(statusCode, message);
   }

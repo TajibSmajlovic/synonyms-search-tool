@@ -14,6 +14,7 @@ import SynonymsList from './SynonymsList';
 import AddSynonymsModal from './AddSynonymsModal';
 import { useGetSynonyms } from './api/useGetSynonyms';
 import { useAddSynonyms } from './api/useAddSynonyms';
+import SynonymsTree from './SynonymsTree';
 
 const Synonyms = () => {
   const isMobileKeyboardOpen = useIsMobileKeyboardOpen();
@@ -76,12 +77,13 @@ const Synonyms = () => {
 
       <If predicate={showSynonyms}>
         <SynonymsList
-          showSynonyms={showSynonyms}
           word={word}
           synonyms={synonyms}
           openModal={openModal}
           isLoading={isSearching}
-        />
+        >
+          <SynonymsTree word={word} />
+        </SynonymsList>
       </If>
 
       {!isMobileKeyboardOpen && (
@@ -105,15 +107,6 @@ const Synonyms = () => {
 };
 
 //#region Styles
-
-const SearchboxWrapper = styled.div`
-  flex: ${({ $showResults }) => ($showResults ? 0 : 1)};
-  max-height: 80%;
-  display: flex;
-  align-items: center;
-  transition: all var(--animation-duration) ease;
-`;
-
 const Container = styled(DefaultContainer)`
   display: flex;
   flex-direction: column;
@@ -127,6 +120,17 @@ const Container = styled(DefaultContainer)`
   }
 `;
 
+const SearchboxWrapper = styled.div`
+  flex: ${({ $showResults }) => ($showResults ? 0 : 1)};
+  max-height: 80%;
+  display: flex;
+  align-items: center;
+  transition: all var(--animation-duration) ease;
+
+  @media screen and (width >= ${SCREEN_BREAKPOINTS.LAPTOP}px) {
+    margin-inline: 20%;
+  }
+`;
 //#endregion Styles
 
 export default Synonyms;

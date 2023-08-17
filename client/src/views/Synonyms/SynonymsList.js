@@ -1,30 +1,33 @@
 import styled, { keyframes } from 'styled-components';
 
-const SynonymsList = ({ word, synonyms, isLoading, openModal }) => {
+const SynonymsList = ({ word, synonyms, isLoading, openModal, children }) => {
   if (isLoading) {
     return (
-      <Wrapper $isLoading={isLoading}>
-        <Message>
+      <ResultsWrapper $isLoading={isLoading}>
+        <ResultMessage>
           Searching for synonyms of <strong>{word}</strong>...
-        </Message>
-      </Wrapper>
+        </ResultMessage>
+      </ResultsWrapper>
     );
   }
 
   return (
-    <Wrapper>
+    <ResultsWrapper>
       {Boolean(!synonyms.length) ? (
-        <Message>
+        <ResultMessage>
           No synonyms found found for <strong>{word}</strong>!
           <br />
           Click <span onClick={openModal}>here</span> to add one.
-        </Message>
+        </ResultMessage>
       ) : (
-        synonyms.map((synonym, index) => (
-          <Synonym key={index}>{synonym}</Synonym>
-        ))
+        <ListWrapper>
+          {synonyms.map((synonym, index) => (
+            <Synonym key={index}>{synonym}</Synonym>
+          ))}
+        </ListWrapper>
       )}
-    </Wrapper>
+      {children}
+    </ResultsWrapper>
   );
 };
 
@@ -43,15 +46,15 @@ const fadeIn = keyframes`
   }
 `;
 
-const Wrapper = styled.div`
+export const ResultsWrapper = styled.div`
   background-color: var(--white);
   border-radius: 4px;
   padding: 3rem;
-  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 1rem;
+  gap: 2rem;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
   animation: ${fadeIn} calc(var(--animation-duration) + 0.2s) linear;
 
   ${({ $isLoading }) =>
@@ -62,21 +65,14 @@ const Wrapper = styled.div`
   `}
 `;
 
-const Synonym = styled.span`
-  max-width: 250px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-weight: 500;
-  font-size: 1.1rem;
-  opacity: 0.9;
-  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
-  display: inline-block;
-  padding: 0.8rem 1.6rem;
-  border-radius: 3px;
-  text-align: center;
+const ListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 `;
 
-const Message = styled.span`
+export const ResultMessage = styled.span`
   flex: 1;
   font-weight: 600;
   font-size: 1.1rem;
@@ -92,6 +88,20 @@ const Message = styled.span`
     text-decoration: underline;
   }
 `;
-// #endregion Styles
+
+const Synonym = styled.span`
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  font-size: 1.1rem;
+  opacity: 0.9;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  border-radius: 3px;
+  text-align: center;
+`;
+//#endregion Styles
 
 export default SynonymsList;

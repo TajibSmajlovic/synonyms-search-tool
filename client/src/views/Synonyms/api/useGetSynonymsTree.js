@@ -9,7 +9,7 @@ export const useGetSynonymsTree = (word) => {
     initialFetch: false,
   });
 
-  const synonymsTree = useMemo(() => result?.data?.tree || {}, [result]);
+  const synonyms = useMemo(() => result?.data || {}, [result]);
 
   useApiNotification({
     errorMessage: error?.message,
@@ -25,7 +25,7 @@ export const useGetSynonymsTree = (word) => {
   }, [cancelRequest, refetch, resetState, word]);
 
   return {
-    synonymsTree,
+    synonyms,
     refetch,
   };
 };

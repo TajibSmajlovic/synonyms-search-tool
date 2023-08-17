@@ -15,7 +15,6 @@ export const Button = ({ type = 'primary', children, ...props } = {}) => {
 };
 
 //#region Styles
-
 const Base = styled.button`
   width: 100%;
   background-color: var(--button-background-color);
@@ -66,5 +65,4 @@ const SubmitButton = styled(({ isLoading, onClick, children, ...rest }) => (
   justify-content: center;
   gap: 0.5rem;
 `;
-
 //#endregion Styles

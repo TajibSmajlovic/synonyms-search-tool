@@ -10,10 +10,10 @@ import {
   Input,
   Alert,
   MultiSelect,
-  Selected,
-  Tooltip,
   Collapse,
   If,
+  Selected as DefaultSelected,
+  Tooltip as DefaultTooltip,
 } from 'components';
 import {
   flatSynonymsTree,
@@ -55,16 +55,20 @@ const AddSynonymsModal = ({
   const { debouncedValue: debouncedKeyword } = useDebounce(word);
 
   const { words, loadMoreWords } = useGetWords(throttledSynonymValue);
-  const { synonymsTree } = useGetSynonymsTree(debouncedKeyword);
+  const { synonyms } = useGetSynonymsTree(debouncedKeyword);
 
   const multiSelectOptions = useMemo(
     () => words.map((word) => ({ id: generateId(), label: word, value: word })),
     [words],
   );
 
+  // flattened synonyms tree list that will be used for displaying preselected synonyms in multiselect and for checking if the word already contains synonyms
   const flattenedSynonymsTreeList = useMemo(
-    () => mapFlattenedSynonymsTreeToList(flatSynonymsTree(synonymsTree)),
-    [synonymsTree],
+    () =>
+      synonyms?.tree
+        ? mapFlattenedSynonymsTreeToList(flatSynonymsTree(synonyms.tree))
+        : [],
+    [synonyms],
   );
 
   // preselected multiselect items that are loaded from the synonyms tree
@@ -236,7 +240,12 @@ const AddSynonymsModal = ({
 
 const PreselectedValueComponent = ({ item, handleItemRemove, ...rest }) => (
   <Tooltip text={item.label.join(', ')}>
-    <Selected item={item} handleItemRemove={handleItemRemove} {...rest} />
+    <Selected
+      $hasTransientSynonyms={Boolean(item.label.length)}
+      item={item}
+      handleItemRemove={handleItemRemove}
+      {...rest}
+    />
   </Tooltip>
 );
 
@@ -249,6 +258,21 @@ const InfoWrapper = styled.div`
   & div {
     font-size: 0.8rem;
   }
+`;
+
+const Tooltip = styled(DefaultTooltip)`
+  background-color: var(--warning-background);
+  color: var(--warning-color);
+  font-size: 0.675rem;
+`;
+
+const Selected = styled(DefaultSelected)`
+  ${({ $hasTransientSynonyms }) =>
+    $hasTransientSynonyms &&
+    `
+      background-color: var(--warning-background);
+      color: var(--warning-color);
+    `}
 `;
 
 export default AddSynonymsModal;

@@ -1,5 +1,4 @@
-const generate = ({ status, data = [], message = '' }) => ({
-  status,
+const generate = (data, message = '') => ({
   message,
   data,
 });

@@ -38,6 +38,17 @@ function getAllSynonyms(word) {
   return Array.from(foundSynonyms);
 }
 
+function checkForRelationship(word, synonym) {
+  const doestAlreadyExist = getAllSynonyms(word).includes(synonym);
+
+  if (doestAlreadyExist) {
+    throw new ApiError(
+      HTTP_STATUSES.BAD_REQUEST,
+      `Synonym relationship between ${word} and ${synonym} already exists!`,
+    );
+  }
+}
+
 function buildSynonymsTreeRecursively(word, visited = new Set()) {
   if (!wordsStore.hasWord(word) || visited.has(word)) {
     return {};
@@ -61,9 +72,10 @@ function getSynonymsTree(word) {
   // word not found which means it's not possible to have synonyms
   if (!wordsStore.hasWord(word)) return new Map();
 
-  const tree = buildSynonymsTreeRecursively(word);
+  const synonymsTree = buildSynonymsTreeRecursively(word);
+  const treeDto = wordDto.mapToTreeDto(word, synonymsTree);
 
-  return response.generate({ data: { tree } });
+  return response.generate(treeDto);
 }
 // #endregion Helper functions
 
@@ -71,7 +83,7 @@ const getSynonyms = (word) => {
   const synonymsEntities = getAllSynonyms(word);
   const synonymsDto = wordDto.mapToSynonymsDto(synonymsEntities);
 
-  return response.generate({ data: synonymsDto });
+  return response.generate(synonymsDto);
 };
 
 const getWords = ({ keyword = '', page = 1, pageSize = 10 } = {}) => {
@@ -84,9 +96,9 @@ const getWords = ({ keyword = '', page = 1, pageSize = 10 } = {}) => {
     words = words.filter((word) => word.startsWith(keyword));
   }
 
-  words = pagination.paginateData(page, pageSize, words);
+  words = pagination.paginateData(page, pageSize, words); // todo
 
-  return response.generate({ data: { words, total } });
+  return response.generate({ words, total });
 };
 
 const addSynonyms = (word, synonyms) => {
@@ -120,18 +132,13 @@ const addSynonyms = (word, synonyms) => {
 
     // only create synonym relationship if it's not already created
     if (!wordsStore.hasSynonym(word, synonym)) {
-      if (getAllSynonyms(word).includes(synonym)) {
-        throw new ApiError(
-          HTTP_STATUSES.BAD_REQUEST,
-          `Synonym relationship between ${word} and ${synonym} already exists!`,
-        );
-      }
-
+      checkForRelationship(word, synonym);
       wordsStore.addSynonym(word, synonym);
     }
   });
 
-  return response.generate({ message: 'Synonyms added successfully' });
+  // todo
+  return response.generate([], 'Synonyms added successfully');
 };
 
 module.exports = {
