@@ -108,6 +108,7 @@ const Synonyms = () => {
 
 //#region Styles
 const Container = styled(DefaultContainer)`
+  flex-basis: 100%;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -128,7 +129,8 @@ const SearchboxWrapper = styled.div`
   transition: all var(--animation-duration) ease;
 
   @media screen and (width >= ${SCREEN_BREAKPOINTS.LAPTOP}px) {
-    margin-inline: 20%;
+    min-width: 60%;
+    align-self: center;
   }
 `;
 //#endregion Styles

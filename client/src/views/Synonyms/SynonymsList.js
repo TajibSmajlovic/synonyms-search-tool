@@ -1,5 +1,7 @@
 import styled, { keyframes } from 'styled-components';
 
+import { SCREEN_BREAKPOINTS } from 'utils/constants';
+
 const SynonymsList = ({ word, synonyms, isLoading, openModal, children }) => {
   if (isLoading) {
     return (
@@ -56,6 +58,8 @@ export const ResultsWrapper = styled.div`
   gap: 2rem;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
   animation: ${fadeIn} calc(var(--animation-duration) + 0.2s) linear;
+  min-width: 100%;
+  align-self: center;
 
   ${({ $isLoading }) =>
     $isLoading &&
@@ -63,6 +67,10 @@ export const ResultsWrapper = styled.div`
       opacity: 0.7;
       pointer-events: none;
   `}
+
+  @media screen and (width >= ${SCREEN_BREAKPOINTS.LAPTOP}px) {
+    min-width: 60%;
+  }
 `;
 
 const ListWrapper = styled.div`

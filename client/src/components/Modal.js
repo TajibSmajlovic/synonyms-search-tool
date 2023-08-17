@@ -125,6 +125,7 @@ const ModalContent = styled.div`
   margin: auto;
   background-color: var(--white);
   padding: 1.5rem;
+  border-radius: 2px;
 
   @media screen and (height <= 700px) {
     max-height: 95dvh;

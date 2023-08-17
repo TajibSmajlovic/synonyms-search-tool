@@ -143,6 +143,7 @@ table {
     float above the app.
   */
   isolation: isolate;
+  padding: 1.5rem;
 }
 html,
 body,
@@ -159,5 +160,4 @@ main {
   align-items: center;
   justify-content: space-around;
   flex-direction: row;
-  padding: 8px;
 }

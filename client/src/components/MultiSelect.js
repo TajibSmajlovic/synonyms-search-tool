@@ -131,8 +131,16 @@ const Dropdown = ({
     }
   };
 
+  const renderAddOption =
+    Boolean(inputValue) && !options.find(({ value }) => value === inputValue);
+
   return (
     <StyledDropdown onScroll={onScroll}>
+      {renderAddOption && (
+        <AddOption onClick={() => handleSelect(generateItem(inputValue))}>
+          Add <b>{inputValue}</b>
+        </AddOption>
+      )}
       {options.map((option) => (
         <Option key={option.id} onClick={() => handleSelect(option)}>
           {option.value}

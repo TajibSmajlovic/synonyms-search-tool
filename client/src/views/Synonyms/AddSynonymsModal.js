@@ -102,6 +102,7 @@ const AddSynonymsModal = ({
 
     const preselectedItems = items.preselected
       .map((item) => [item.value, ...(item.label.length ? [item.label] : [])])
+      .flat()
       .flat();
     const relatedItems = [
       ...items.selected.map((item) => item.value),
@@ -194,12 +195,12 @@ const AddSynonymsModal = ({
             <Alert variant="info">
               <ul>
                 <li>
-                  You can hover over loaded synonyms to see if the word contains
-                  any synonyms.
+                  Newly selected synonyms will have greenish color. Synonym will
+                  have yellowish color if it contain any transient synonyms.
                 </li>
                 <li>
-                  Newly selected synonyms will have greenish color, while the
-                  existing ones will have greyish color.
+                  Synonyms with the yellowish color contain transient synonyms.
+                  you can hover over them to see the transient synonyms.
                 </li>
               </ul>
             </Alert>

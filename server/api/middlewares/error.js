@@ -23,9 +23,7 @@ const errorConverter = (err, req, res, next) => {
 const errorHandler = (err, req, res, next) => {
   const { statusCode, message } = err;
 
-  const response = responseDto.generate({
-    message,
-  });
+  const response = responseDto.generate(null, message);
 
   res.status(statusCode).send(response);
 };
