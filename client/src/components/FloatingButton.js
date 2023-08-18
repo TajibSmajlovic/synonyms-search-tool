@@ -2,8 +2,10 @@ import styled from 'styled-components';
 
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
-export const FloatingButton = ({ children, onClick }) => (
-  <StyledFloatingButton onClick={onClick}>{children}</StyledFloatingButton>
+export const FloatingButton = ({ onClick, children, ...rest }) => (
+  <StyledFloatingButton onClick={onClick} {...rest}>
+    {children}
+  </StyledFloatingButton>
 );
 
 const StyledFloatingButton = styled.button`

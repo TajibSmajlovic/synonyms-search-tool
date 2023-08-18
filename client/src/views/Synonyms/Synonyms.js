@@ -1,5 +1,6 @@
+//#region Imports
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useState, lazy, Suspense } from 'react';
 
 import {
   Container as DefaultContainer,
@@ -10,11 +11,23 @@ import {
 import { useIsMobileKeyboardOpen, useSearchbox } from 'hooks';
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
-import SynonymsList from './SynonymsList';
-import AddSynonymsModal from './AddSynonymsModal';
 import { useGetSynonyms } from './api/useGetSynonyms';
 import { useAddSynonyms } from './api/useAddSynonyms';
-import SynonymsTree from './SynonymsTree';
+
+/*
+  prefetching the synonyms tree and the synonyms list components
+  this means once the search is performed, the tree and the list components will be loaded from the cache
+*/
+const SynonymsList = lazy(() =>
+  import(/* webpackPrefetch: true */ './SynonymsList'),
+);
+const SynonymsTree = lazy(() =>
+  import(/* webpackPrefetch: true */ './SynonymsTree'),
+);
+
+const loadAdvancedModal = () => import('./AddSynonymsModal'); // used for eager loading the modal
+const AddSynonymsModal = lazy(loadAdvancedModal);
+//#endregion Imports
 
 const Synonyms = () => {
   const isMobileKeyboardOpen = useIsMobileKeyboardOpen();
@@ -87,20 +100,25 @@ const Synonyms = () => {
       </If>
 
       {!isMobileKeyboardOpen && (
-        <FloatingButton onClick={initiateAddSynonyms}>
+        <FloatingButton
+          onClick={initiateAddSynonyms}
+          onMouseEnter={loadAdvancedModal} // eager loading the modal
+        >
           Add Synonym
         </FloatingButton>
       )}
 
       <If predicate={isModalOpen}>
-        <AddSynonymsModal
-          isOpen={isModalOpen}
-          isAddingSynonyms={isAdding}
-          initialWord={word}
-          onClose={closeModal}
-          onSubmit={onSubmit}
-          error={addSynonymApiError?.message}
-        />
+        <Suspense fallback={<div />}>
+          <AddSynonymsModal
+            isOpen={isModalOpen}
+            isAddingSynonyms={isAdding}
+            initialWord={word}
+            onClose={closeModal}
+            onSubmit={onSubmit}
+            error={addSynonymApiError?.message}
+          />
+        </Suspense>
       </If>
     </Container>
   );

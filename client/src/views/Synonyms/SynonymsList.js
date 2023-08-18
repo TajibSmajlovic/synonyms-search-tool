@@ -54,14 +54,14 @@ const fadeIn = keyframes`
 export const ResultsWrapper = styled.div`
   background-color: var(--white);
   border-radius: 4px;
-  padding: 3rem;
+  padding: 1rem;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
   box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
   animation: ${fadeIn} calc(var(--animation-duration) + 0.2s) linear;
-  min-width: 100%;
+  min-width: 60%;
   align-self: center;
 
   ${({ $isLoading }) =>
@@ -71,8 +71,8 @@ export const ResultsWrapper = styled.div`
       pointer-events: none;
   `}
 
-  @media screen and (width >= ${SCREEN_BREAKPOINTS.LAPTOP}px) {
-    min-width: 60%;
+  @media screen and (width >= ${SCREEN_BREAKPOINTS.TABLET}px) {
+    padding: 3rem;
   }
 `;
 
