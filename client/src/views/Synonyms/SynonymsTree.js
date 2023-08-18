@@ -27,7 +27,7 @@ const SynonymsTree = ({ word }) => {
   const tree = { [synonyms.word]: synonyms.tree };
 
   return (
-    <Wrapper>
+    <Wrapper data-testid="synonyms-tree">
       <Tree className="root">{renderTree(tree)}</Tree>
     </Wrapper>
   );

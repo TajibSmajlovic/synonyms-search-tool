@@ -6,6 +6,7 @@ import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
 export const Searchbox = ({
   searchTerm,
+  placeholder,
   isSearching,
   onChange,
   onSearch,
@@ -15,7 +16,7 @@ export const Searchbox = ({
     <SearchInput
       type="text"
       name="search"
-      placeholder="Type to search for synonyms"
+      placeholder={placeholder}
       value={searchTerm}
       onChange={onChange}
     />

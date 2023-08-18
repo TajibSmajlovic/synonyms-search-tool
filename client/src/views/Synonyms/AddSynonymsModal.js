@@ -16,9 +16,10 @@ import {
   Tooltip as DefaultTooltip,
 } from 'components';
 import {
-  flatSynonymsTree,
   generateId,
-  mapFlattenedSynonymsTreeToList,
+  flatSynonymsTreeToDirectChildren,
+  mapFlattenedSynonymsTreeToListOfObject,
+  mapSynonymsTreeListOfObjectsToOneList,
 } from 'utils/helpers';
 import { useThrottle, useMultiSelect, useDebounce } from 'hooks';
 
@@ -62,14 +63,16 @@ const AddSynonymsModal = ({
     [words],
   );
 
-  // flattened synonyms tree list that will be used for displaying preselected synonyms in multiselect and for checking if the word already contains synonyms
-  const flattenedSynonymsTreeList = useMemo(
-    () =>
-      synonyms?.tree
-        ? mapFlattenedSynonymsTreeToList(flatSynonymsTree(synonyms.tree))
-        : [],
-    [synonyms],
-  );
+  // flattened synonyms tree list that will be used for displaying preselected synonyms in multiselect and for checking synonyms to remove in handleSubmit()
+  const flattenedSynonymsTreeList = useMemo(() => {
+    if (!synonyms?.tree) return [];
+
+    const flattenedTree = flatSynonymsTreeToDirectChildren(synonyms.tree);
+    const flattenedTreeList =
+      mapFlattenedSynonymsTreeToListOfObject(flattenedTree);
+
+    return flattenedTreeList;
+  }, [synonyms]);
 
   // preselected multiselect items that are loaded from the synonyms tree
   const preselectedItems = useMemo(
@@ -100,10 +103,11 @@ const AddSynonymsModal = ({
   const canAddItem = (item) => {
     if (item.value === word) return false;
 
-    const preselectedItems = items.preselected
-      .map((item) => [item.value, ...(item.label.length ? [item.label] : [])])
-      .flat()
-      .flat();
+    const preselectedItems = mapSynonymsTreeListOfObjectsToOneList(
+      items.preselected,
+      'value',
+      'label',
+    );
     const relatedItems = [
       ...items.selected.map((item) => item.value),
       ...preselectedItems,
@@ -169,7 +173,7 @@ const AddSynonymsModal = ({
   }, [populatePreselectedItems, preselectedItems]);
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} data-testid="add-synonyms-modal">
       <ModalHeader onClose={onClose}>Add Synonym</ModalHeader>
       <ModalBody>
         <If predicate={Boolean(apiError)}>
@@ -194,13 +198,10 @@ const AddSynonymsModal = ({
             </Alert>
             <Alert variant="info">
               <ul>
-                <li>
-                  Newly selected synonyms will have greenish color. Synonym will
-                  have yellowish color if it contain any transient synonyms.
-                </li>
+                <li>Newly selected synonyms will have greenish color.</li>
                 <li>
                   Synonyms with the yellowish color contain transient synonyms.
-                  you can hover over them to see the transient synonyms.
+                  You can hover over them to see the transient synonyms.
                 </li>
               </ul>
             </Alert>

@@ -6,7 +6,7 @@ import { If } from 'components';
 import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
 //#region Components
-export const Modal = ({ isOpen, onClose, children }) => {
+export const Modal = ({ isOpen, onClose, children, ...rest }) => {
   // Prevent scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
@@ -19,7 +19,7 @@ export const Modal = ({ isOpen, onClose, children }) => {
   return (
     <If predicate={isOpen}>
       <Wrapper onClick={onClose}>
-        <ModalContent>{children}</ModalContent>
+        <ModalContent {...rest}>{children}</ModalContent>
       </Wrapper>
     </If>
   );

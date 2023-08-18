@@ -4,7 +4,14 @@ export const Spinner = ({
   height = 50,
   width = 50,
   color = 'var(--gray_400)',
-} = {}) => <StyledSpinner $height={height} $width={width} $color={color} />;
+} = {}) => (
+  <StyledSpinner
+    data-testid="spinner"
+    $height={height}
+    $width={width}
+    $color={color}
+  />
+);
 
 const StyledSpinner = styled.span`
   width: ${({ $width }) => $width}px;

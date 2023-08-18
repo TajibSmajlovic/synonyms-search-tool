@@ -14,8 +14,10 @@ export function buildQueryPath(path, params) {
   return `${path}?${queryParams}`;
 }
 
-// recursively iterate over synonyms tree and populate array with all synonyms found
-function flatSynonymsTreeRecursively(synonymsTree, flattened = []) {
+function flatSynonymsTreeToDirectChildrenRecursively(
+  synonymsTree,
+  flattened = [],
+) {
   for (const key in synonymsTree) {
     flattened.push(key);
 
@@ -23,19 +25,31 @@ function flatSynonymsTreeRecursively(synonymsTree, flattened = []) {
       typeof synonymsTree[key] === 'object' &&
       Object.keys(synonymsTree[key]).length > 0
     ) {
-      flatSynonymsTreeRecursively(synonymsTree[key], flattened);
+      flatSynonymsTreeToDirectChildrenRecursively(synonymsTree[key], flattened);
     }
   }
 
   return flattened;
 }
 
-// iterate over direct synonyms (children) and create a string contain all connected (transient) synonyms
-export function flatSynonymsTree(tree) {
+/*
+ iterate over synonyms tree and for each direct child populate a list containing its synonyms
+  ex:
+      {
+        ecstatic: {},                           {
+        joyful: {},                               ecstatic: [],
+        raif: {                   --->            joyful: [],
+          rojf: {},                               raif: ['rojf, 'smajke']
+          smajke: {},                           }
+        },
+      };
+*/
+
+export function flatSynonymsTreeToDirectChildren(tree) {
   const flattened = {};
 
   for (const key in tree) {
-    flattened[key] = flatSynonymsTreeRecursively(tree[key]);
+    flattened[key] = flatSynonymsTreeToDirectChildrenRecursively(tree[key]);
   }
 
   return flattened;
@@ -50,8 +64,34 @@ export function flatSynonymsTree(tree) {
         raif: ['rojf, 'smajke']               {word: 'raif', synonyms: ['rojf, smajke']}
       }                                     ]
 */
-export const mapFlattenedSynonymsTreeToList = (flattenedSynonymsTree) =>
-  Object.keys(flattenedSynonymsTree).map((word) => ({
+export function mapFlattenedSynonymsTreeToListOfObject(flattenedSynonymsTree) {
+  return Object.keys(flattenedSynonymsTree).map((word) => ({
     word,
     synonyms: flattenedSynonymsTree[word],
   }));
+}
+
+/*
+  map list of objects to one list
+  ex:
+     [
+        {word: 'joyful', synonyms: []},
+        {word: 'ecstatic', synonyms: []},                ['joyful', 'ecstatic', 'raif', 'rojf, smajke']
+        {word: 'raif', synonyms: ['rojf, smajke']}
+     ]
+*/
+export function mapSynonymsTreeListOfObjectsToOneList(
+  synonymsListOfObjects,
+  wordKey = 'word',
+  synonymsKey = 'synonyms',
+) {
+  return synonymsListOfObjects
+    .map((item) => {
+      const directSynonym = item[wordKey];
+      const transientSynonyms = item[synonymsKey] || [];
+
+      return [directSynonym, ...transientSynonyms];
+    })
+    .flat()
+    .flat();
+}

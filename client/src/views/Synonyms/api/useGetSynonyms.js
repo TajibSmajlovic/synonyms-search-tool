@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { useApi, useApiNotification } from 'hooks/api';
 import { useSpinDelay } from 'hooks';
-import { ENDPOINT_ROUTES } from 'constants';
+import { ENDPOINT_ROUTES } from 'utils/constants';
 
 export const useGetSynonyms = (word) => {
   const path = `${ENDPOINT_ROUTES.SYNONYMS}?word=${word}`;

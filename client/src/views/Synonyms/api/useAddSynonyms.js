@@ -1,6 +1,5 @@
 import { useApi, useApiNotification } from 'hooks/api';
-import { HTTP_VERBS } from 'utils/constants';
-import { ENDPOINT_ROUTES } from 'constants';
+import { HTTP_VERBS, ENDPOINT_ROUTES } from 'utils/constants';
 
 export const useAddSynonyms = () => {
   const [{ result, isLoading, error }, addSynonyms] = useApi(

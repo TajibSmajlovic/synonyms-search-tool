@@ -1,7 +1,7 @@
 import { useEffect, useMemo } from 'react';
 
 import { useApi, useApiNotification } from 'hooks/api';
-import { ENDPOINT_ROUTES } from 'constants';
+import { ENDPOINT_ROUTES } from 'utils/constants';
 
 export const useGetSynonymsTree = (word) => {
   const path = `${ENDPOINT_ROUTES.SYNONYMS_TREE}?word=${word}`;

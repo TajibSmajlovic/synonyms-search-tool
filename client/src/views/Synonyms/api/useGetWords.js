@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 
 import { useApi } from 'hooks/api';
 import { useSpinDelay, usePaginate } from 'hooks';
-import { ENDPOINT_ROUTES } from 'constants';
 import { buildQueryPath } from 'utils/helpers';
+import { ENDPOINT_ROUTES } from 'utils/constants';
 
 export const useGetWords = (keyword) => {
   const { page, pageSize, handlePageChange } = usePaginate();

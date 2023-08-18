@@ -82,6 +82,7 @@ const Synonyms = () => {
     <Container>
       <SearchboxWrapper $showResults={showSynonyms}>
         <Searchbox
+          placeholder="Type to search for synonyms"
           isSearching={isSearching}
           onClear={onClearSearchbox}
           {...remainingSearchProps}
@@ -109,7 +110,7 @@ const Synonyms = () => {
       )}
 
       <If predicate={isModalOpen}>
-        <Suspense fallback={<div />}>
+        <Suspense fallback={<div data-testid="modal-suspense-fallback" />}>
           <AddSynonymsModal
             isOpen={isModalOpen}
             isAddingSynonyms={isAdding}

@@ -19,11 +19,15 @@ const SynonymsList = ({ word, synonyms, isLoading, openModal, children }) => {
         <ResultMessage>
           No synonyms found found for <strong>{word}</strong>!
           <br />
-          Click <span onClick={openModal}>here</span> to add one.
+          Click
+          <span data-testid="toggle-add-synonym-modal" onClick={openModal}>
+            here
+          </span>
+          to add one.
         </ResultMessage>
       ) : (
         <>
-          <ListWrapper>
+          <ListWrapper data-testid="synonyms-list">
             {synonyms.map((synonym, index) => (
               <Synonym key={index}>{synonym}</Synonym>
             ))}
@@ -51,38 +55,6 @@ const fadeIn = keyframes`
   }
 `;
 
-export const ResultsWrapper = styled.div`
-  background-color: var(--white);
-  border-radius: 4px;
-  padding: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
-  animation: ${fadeIn} calc(var(--animation-duration) + 0.2s) linear;
-  min-width: 60%;
-  align-self: center;
-
-  ${({ $isLoading }) =>
-    $isLoading &&
-    `
-      opacity: 0.7;
-      pointer-events: none;
-  `}
-
-  @media screen and (width >= ${SCREEN_BREAKPOINTS.TABLET}px) {
-    padding: 3rem;
-  }
-`;
-
-const ListWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-`;
-
 export const ResultMessage = styled.span`
   flex: 1;
   font-weight: 600;
@@ -98,6 +70,46 @@ export const ResultMessage = styled.span`
     cursor: pointer;
     text-decoration: underline;
   }
+`;
+
+export const ResultsWrapper = styled.div`
+  background-color: var(--white);
+  border-radius: 4px;
+  padding: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2rem;
+  box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.15);
+  animation: ${fadeIn} calc(var(--animation-duration) + 0.2s) linear;
+  align-self: center;
+  min-width: 100%;
+
+  ${({ $isLoading }) =>
+    $isLoading &&
+    `
+      opacity: 0.7;
+      pointer-events: none;
+  `}
+
+  & ${ResultMessage} {
+    padding-block: 2rem;
+  }
+
+  @media screen and (width >= ${SCREEN_BREAKPOINTS.TABLET}px) {
+    padding: 3rem;
+  }
+
+  @media screen and (width >= ${SCREEN_BREAKPOINTS.LAPTOP}px) {
+    min-width: 60%;
+  }
+`;
+
+const ListWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 `;
 
 const Synonym = styled.span`
