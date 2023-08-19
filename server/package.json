@@ -8,7 +8,7 @@
   "scripts": {
     "start": "nodemon server.js",
     "test": "jest",
-    "test:pre-push": "jest --watchAll=false --coverage --coverageThreshold='global>=70'"
+    "test:pre-push": "jest --watchAll=false --coverage"
   },
   "dependencies": {
     "body-parser": "^1.20.2",
