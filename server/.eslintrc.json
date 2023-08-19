@@ -1,9 +1,10 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "jest": true
   },
   "extends": ["airbnb-base", "plugin:security/recommended"],
-  "plugins": ["security"],
+  "plugins": ["security", "jest"],
   "parserOptions": {
     "ecmaVersion": 2023
   },

@@ -2,7 +2,7 @@
 . "$(dirname "$0")/_/husky.sh"
 
 cd client
-npm run test:push
+npm run test:pre-push
 
 cd ../server
-npm run test
+npm run test:pre-push

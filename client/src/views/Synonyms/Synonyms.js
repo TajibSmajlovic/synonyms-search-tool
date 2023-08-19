@@ -36,6 +36,7 @@ const Synonyms = () => {
   const {
     debouncedValue: word,
     onClear: onClearSearchbox,
+    setSearchValue,
     ...remainingSearchProps
   } = useSearchbox();
 
@@ -72,6 +73,8 @@ const Synonyms = () => {
       // If the user searched for a word, we want to refetch the synonyms for that word
       if (Boolean(word)) {
         await refetchSynonyms(word);
+      } else {
+        setSearchValue(body.word);
       }
 
       closeModal();

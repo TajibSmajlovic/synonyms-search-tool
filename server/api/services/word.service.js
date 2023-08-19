@@ -137,8 +137,10 @@ const addSynonyms = (word, synonyms) => {
     }
   });
 
-  // todo
-  return response.generate([], 'Synonyms added successfully');
+  return response.generate(
+    null,
+    `Synonyms relationships for the word:'${word}' updated!`,
+  );
 };
 
 module.exports = {

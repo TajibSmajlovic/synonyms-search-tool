@@ -23,10 +23,25 @@ export const useSearchbox = (initialValue = '') => {
     [setDebouncedValue],
   );
 
+  const setSearchValue = useCallback(
+    (value) => {
+      setSearchTerm(value);
+      setDebouncedValue(value);
+    },
+    [setDebouncedValue],
+  );
+
   const onClear = useCallback(() => {
     setDebouncedValue('');
     setSearchTerm('');
   }, [setDebouncedValue]);
 
-  return { debouncedValue, searchTerm, onChange, onSearch, onClear };
+  return {
+    debouncedValue,
+    searchTerm,
+    onChange,
+    onSearch,
+    setSearchValue,
+    onClear,
+  };
 };

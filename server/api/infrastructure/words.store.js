@@ -6,7 +6,6 @@ class WordsStore {
 
   constructor() {
     this.#store = seedWordsStore();
-    this.helper = this.#store;
   }
 
   get all() {

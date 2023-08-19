@@ -19,10 +19,10 @@ const SynonymsList = ({ word, synonyms, isLoading, openModal, children }) => {
         <ResultMessage>
           No synonyms found found for <strong>{word}</strong>!
           <br />
-          Click
+          Click{' '}
           <span data-testid="toggle-add-synonym-modal" onClick={openModal}>
             here
-          </span>
+          </span>{' '}
           to add one.
         </ResultMessage>
       ) : (
