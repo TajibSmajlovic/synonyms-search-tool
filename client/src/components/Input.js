@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { If, Spinner as DefaultSpinner } from './';
+import { If, Spinner as DefaultSpinner } from 'components';
 
 export const Input = ({
   value,

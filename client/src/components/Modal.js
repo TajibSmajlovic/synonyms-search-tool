@@ -7,7 +7,7 @@ import { SCREEN_BREAKPOINTS } from 'utils/constants';
 
 //#region Components
 export const Modal = ({ isOpen, onClose, children, ...rest }) => {
-  // Prevent scrolling when modal is open
+  // Prevents scrolling when modal is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';

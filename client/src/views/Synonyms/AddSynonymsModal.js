@@ -1,3 +1,4 @@
+//#region Imports
 import styled from 'styled-components';
 import { useEffect, useMemo } from 'react';
 
@@ -26,6 +27,7 @@ import { useThrottle, useMultiSelect, useDebounce } from 'hooks';
 import { useGetWords } from './api/useGetWords';
 import { useGetSynonymsTree } from './api/useGetSynonymsTree';
 import { useAddSynonymsForm } from './utils/useAddSynonymsForm';
+//#endregion Imports
 
 const AddSynonymsModal = ({
   isOpen,

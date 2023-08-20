@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 
-import { If } from './If';
-import { Spinner } from './Spinner';
+import { If, Spinner } from 'components';
 
 export const Button = ({ type = 'primary', children, ...props } = {}) => {
   switch (type) {

@@ -18,6 +18,7 @@ const renderTree = (synonyms) =>
     );
   });
 
+// https://medium.com/@ross.angus/sitemaps-and-dom-structure-from-nested-unordered-lists-eab2b02950cf
 const SynonymsTree = ({ word }) => {
   const { synonyms } = useGetSynonymsTree(word);
 
@@ -75,7 +76,6 @@ const TreeNode = styled.code`
   &:before {
     outline: var(--line);
     content: '';
-    /* gornja linija sa marginom */
     height: 1.5rem;
     left: 50%;
     position: absolute;
@@ -99,7 +99,6 @@ const Tree = styled.ul`
     content: '';
     position: absolute;
     outline: var(--line);
-    /* kontrolise visinu linije */
     height: 1.5rem;
     top: -1.5rem;
     left: 50%;

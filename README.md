@@ -1,12 +1,10 @@
-## Live Demo (**todo**)
+## Live Demo (**https://synonyms-search-tool.onrender.com**)
 
-## System Requirements
+## System Requirements to run the app locally:
 
 - [git][git] v2.13 or greater
 - [npm][npm] v8.16.0 or greater
 - [NodeJS][node] `14 || 16 || 18`
-
-&nbsp;
 
 To verify things are set up properly, you can run this:
 
@@ -23,6 +21,7 @@ npm --version
    ```shell
    git clone https://github.com/TajibSmajlovic/synonyms-search-tool
    ```
+
 2. navigate to the project directory:
    ```shell
    cd synonyms-search-tool
@@ -32,14 +31,14 @@ npm --version
    npm run setup
    ```
 4. after installation of the dependencies is finished, run:
+
    ```shell
    npm start
    ```
 
-   - (_Server will be running on http://localhost:8000_)
-   - (_Client will be running on http://localhost:3000 in the browser_)
+   4.1. Verify that the server is running by navigating to _http://localhost:8000/api/health_ in the browser
 
-&nbsp;
+   4.2. Verify that the client is running by navigating to _http://localhost:3000_ in the browser
 
 ### That's it! You are ready to go! 🦾
 

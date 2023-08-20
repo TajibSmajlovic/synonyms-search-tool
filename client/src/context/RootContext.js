@@ -11,6 +11,7 @@ import { ALERT_VARIANTS, NOTIFICATION_DISMISS_TIMEOUT } from 'utils/constants';
 
 const RootContext = createContext();
 
+// Context responsible for storing global state like user, notifications, etc.
 export const RootProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 

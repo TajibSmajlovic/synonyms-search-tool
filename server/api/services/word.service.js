@@ -67,6 +67,7 @@ function buildSynonymsTreeRecursively(word, visited = new Set()) {
 
   return Object.fromEntries(tree);
 }
+// #endregion Helper functions
 
 function getSynonymsTree(word) {
   // word not found which means it's not possible to have synonyms
@@ -77,14 +78,6 @@ function getSynonymsTree(word) {
 
   return response.generate(treeDto);
 }
-// #endregion Helper functions
-
-const getSynonyms = (word) => {
-  const synonymsEntities = getAllSynonyms(word);
-  const synonymsDto = wordDto.mapToSynonymsDto(synonymsEntities);
-
-  return response.generate(synonymsDto);
-};
 
 const getWords = ({ keyword = '', page = 1, pageSize = 10 } = {}) => {
   const allWords = wordsStore.words;
@@ -99,6 +92,13 @@ const getWords = ({ keyword = '', page = 1, pageSize = 10 } = {}) => {
   words = pagination.paginateData(page, pageSize, words); // todo
 
   return response.generate({ words, total });
+};
+
+const getSynonyms = (word) => {
+  const synonymsEntities = getAllSynonyms(word);
+  const synonymsDto = wordDto.mapToSynonymsDto(synonymsEntities);
+
+  return response.generate(synonymsDto);
 };
 
 const addSynonyms = (word, synonyms) => {
