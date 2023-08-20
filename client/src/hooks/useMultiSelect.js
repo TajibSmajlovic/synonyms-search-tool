@@ -44,11 +44,14 @@ function valuesReducer(state, action) {
   }
 }
 
-export const useMultiSelect = (initiallySelectedValues = []) => {
+export const useMultiSelect = (
+  initiallyPreselectedValues = [],
+  initiallySelectedValues = [],
+) => {
   const [inputValue, setInputValue] = useState('');
   const [items, dispatch] = useReducer(valuesReducer, {
-    selected: [],
-    preselected: initiallySelectedValues,
+    selected: initiallySelectedValues,
+    preselected: initiallyPreselectedValues,
   });
 
   const onInputChange = (event) => {
