@@ -6,7 +6,6 @@ const { HTTP_STATUSES } = require('@constants');
 
 // #region Helper functions
 function getAllSynonymsRecursively(word, foundSynonyms, seenWords) {
-  if (wordsStore.wordsCount === 0) return foundSynonyms;
   if (seenWords.has(word)) return foundSynonyms;
 
   const synonyms = wordsStore.getSynonyms(word);
@@ -26,6 +25,7 @@ function getAllSynonymsRecursively(word, foundSynonyms, seenWords) {
 function getAllSynonyms(word) {
   // word not found which means it's not possible to have synonyms
   if (!wordsStore.hasWord(word)) return [];
+  if (wordsStore.wordsCount === 0) return [];
 
   const seenWords = new Map();
   const foundSynonyms = new Set();
