@@ -89,7 +89,7 @@ const getWords = ({ keyword = '', page = 1, pageSize = 10 } = {}) => {
     words = words.filter((word) => word.startsWith(keyword));
   }
 
-  words = pagination.paginateData(page, pageSize, words); // todo
+  words = pagination.paginateData(page, pageSize, words);
 
   return response.generate({ words, total });
 };
